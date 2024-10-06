@@ -2,8 +2,10 @@ const theme = {
   colors: {
     textPrimary: '#24292e',
     textSecondary: '#586069',
+    neutral: '#e1e4e8',
     // primary: '#0366d6',
     primary: 'white',
+    error: '#d73a4a',
   },
   bgColors: {
     primary: '#24292e',

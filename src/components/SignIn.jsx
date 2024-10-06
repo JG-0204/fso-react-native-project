@@ -1,7 +1,9 @@
-import { TextInput, View, Pressable, StyleSheet } from 'react-native';
+import { View, Pressable, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
+import * as yup from 'yup';
 
 import Text from './Text';
+import TextInput from './TextInput';
 
 import theme from '../theme';
 
@@ -10,8 +12,20 @@ const initialValues = {
   password: '',
 };
 
-const submit = ({ username, password }) =>
+const submit = ({ username, password }) => {
   console.log(`\n Username: ${username} \n Password: ${password}`);
+};
+
+const SignInSchema = yup.object().shape({
+  username: yup
+    .string()
+    .min(4, 'Username should be 4 or more characters long')
+    .required('Username is required'),
+  password: yup
+    .string()
+    .min(4, 'Password should be 4 or more characters long')
+    .required('Password is required'),
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -22,13 +36,6 @@ const styles = StyleSheet.create({
     gap: 15,
     backgroundColor: theme.colors.primary,
   },
-  input: {
-    paddingHorizontal: 8,
-    paddingVertical: 15,
-    borderWidth: 1,
-    borderColor: theme.bgColors.neutral,
-    borderRadius: 3,
-  },
   button: {
     borderRadius: 3,
     backgroundColor: theme.bgColors.secondary,
@@ -38,26 +45,39 @@ const styles = StyleSheet.create({
     color: theme.colors.primary,
     textAlign: 'center',
   },
+  errorText: {
+    color: theme.colors.error,
+  },
 });
 
 const SignIn = () => {
   return (
-    <Formik initialValues={initialValues} onSubmit={submit}>
-      {({ handleSubmit, handleChange, values }) => (
+    <Formik
+      initialValues={initialValues}
+      onSubmit={submit}
+      validationSchema={SignInSchema}
+    >
+      {({ handleSubmit, handleChange, touched, errors, values }) => (
         <View style={styles.container}>
           <TextInput
-            style={styles.input}
             value={values.username}
             placeholder="Username"
             onChangeText={handleChange('username')}
+            error={touched.username && errors.username}
           />
+          {touched.username && errors.username && (
+            <Text color="error">{errors.username}</Text>
+          )}
           <TextInput
-            style={styles.input}
             value={values.password}
             placeholder="Password"
             onChangeText={handleChange('password')}
             secureTextEntry
+            error={touched.password && errors.password}
           />
+          {touched.password && errors.password && (
+            <Text color="error">{errors.password}</Text>
+          )}
           <Pressable onPress={handleSubmit} style={styles.button}>
             <Text style={styles.buttonText}>Sign in</Text>
           </Pressable>
