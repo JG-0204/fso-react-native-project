@@ -3,19 +3,7 @@ import Text from './Text';
 
 import theme from '../theme';
 
-const formatValue = (num) => {
-  const arr = num.toString().split('');
-  const length = arr.length;
-  const hundreds = arr[length - 3];
-  const thousands = arr.filter((_num, index) => index < length - 3).join('');
-
-  const value = hundreds <= 0 ? `${thousands}k` : `${thousands}.${hundreds}k`;
-
-  if (num > 999) {
-    return value;
-  }
-  return num;
-};
+import formatValue from '../utils/formatValue';
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -60,7 +48,7 @@ const styles = StyleSheet.create({
 
 const RepositoryItem = ({ repository }) => {
   return (
-    <View style={styles.mainContainer}>
+    <View style={styles.mainContainer} testID="repositoryItem">
       <View style={styles.dataContainer}>
         <Image
           style={styles.image}
