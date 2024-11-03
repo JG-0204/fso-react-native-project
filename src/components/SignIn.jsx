@@ -104,7 +104,7 @@ const SignInForm = ({
         style={styles.button}
         testID="submitButton"
       >
-        /<Text style={styles.buttonText}>Sign in</Text>
+        <Text style={styles.buttonText}>Sign in</Text>
       </Pressable>
     </View>
   );
