@@ -22,7 +22,7 @@ const Main = () => {
       <AppBar />
       <Routes>
         <Route path="/" element={<RepositoryList />} />
-        <Route path=":repositoryId" element={<RepositoryView />}></Route>
+        <Route path=":repositoryId" element={<RepositoryView />} />
         <Route path="/login" element={<SignIn />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
