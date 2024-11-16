@@ -5,6 +5,7 @@ import RepositoryList from './RepositoryList';
 import SignIn from './SignIn';
 import AppBar from './AppBar';
 import RepositoryView from './RepositoryView';
+import CreateReviewForm from './CreateReviewForm';
 
 import theme from '../theme';
 
@@ -24,6 +25,7 @@ const Main = () => {
         <Route path="/" element={<RepositoryList />} />
         <Route path=":repositoryId" element={<RepositoryView />} />
         <Route path="/login" element={<SignIn />} />
+        <Route path="/addReview" element={<CreateReviewForm />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </View>

@@ -19,6 +19,7 @@ const RepositoryView = () => {
   });
   const repoReviewQuery = useQuery(GET_REPOSITORY_REVIEWS, {
     variables: { repositoryId },
+    fetchPolicy: 'cache-and-network',
   });
 
   if (repoQuery.loading || repoReviewQuery.loading) {

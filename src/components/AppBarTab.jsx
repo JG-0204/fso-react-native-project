@@ -38,6 +38,19 @@ const AppBarTab = ({ style }) => {
         </Text>
       </Link>
 
+      {data?.me && (
+        <Link to="/addReview">
+          <Text
+            fontWeight="bold"
+            color="primary"
+            fontSize="subheading"
+            style={style}
+          >
+            Create a review
+          </Text>
+        </Link>
+      )}
+
       {data?.me ? (
         <Pressable onPress={onSignOut}>
           <Text
