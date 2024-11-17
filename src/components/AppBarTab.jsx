@@ -13,6 +13,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
   },
+  formContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 10,
+  },
 });
 
 const AppBarTab = ({ style }) => {
@@ -63,16 +68,28 @@ const AppBarTab = ({ style }) => {
           </Text>
         </Pressable>
       ) : (
-        <Link to="/login">
-          <Text
-            fontWeight="bold"
-            color="primary"
-            fontSize="subheading"
-            style={style}
-          >
-            Sign In
-          </Text>
-        </Link>
+        <View style={styles.formContainer}>
+          <Link to="/login">
+            <Text
+              fontWeight="bold"
+              color="primary"
+              fontSize="subheading"
+              style={style}
+            >
+              Sign In
+            </Text>
+          </Link>
+          <Link to="/signup">
+            <Text
+              fontWeight="bold"
+              color="primary"
+              fontSize="subheading"
+              style={style}
+            >
+              Sign Up
+            </Text>
+          </Link>
+        </View>
       )}
     </View>
   );
