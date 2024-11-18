@@ -3,12 +3,13 @@ import { useEffect } from 'react';
 
 import { ALL_REPOSITORIES } from '../graphql/queries';
 
-const useRepositories = (filterBy) => {
+const useRepositories = (filterBy, searchQuery) => {
   const { data, loading, error, refetch } = useQuery(ALL_REPOSITORIES);
 
   useEffect(() => {
     refetch(filterBy);
-  }, [filterBy]);
+    refetch({ searchKeyword: searchQuery });
+  }, [filterBy, searchQuery]);
 
   let repositories;
 

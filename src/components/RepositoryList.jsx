@@ -2,6 +2,8 @@ import { FlatList, View, Pressable } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import { Picker } from '@react-native-picker/picker';
 import { useState } from 'react';
+import { Searchbar } from 'react-native-paper';
+import { useDebounce } from 'use-debounce';
 
 import Text from './Text';
 
@@ -9,6 +11,14 @@ import useRepositories from '../hooks/useRepositories';
 
 import RepositoryItem from './RepositoryItem';
 import ItemSeparator from './ItemSeparator';
+
+const SearchBar = ({ searchQuery, setSearchQuery }) => (
+  <Searchbar
+    placeholder="Search repository"
+    onChangeText={setSearchQuery}
+    value={searchQuery}
+  />
+);
 
 const Filter = ({ filterBy, setFilterBy }) => {
   const FILTER = {
@@ -61,6 +71,8 @@ export const RepositoryListContainer = ({
   navigate,
   filterBy,
   setFilterBy,
+  searchQuery,
+  setSearchQuery,
 }) => {
   return (
     <FlatList
@@ -77,7 +89,13 @@ export const RepositoryListContainer = ({
       )}
       keyExtractor={(repository) => repository.id}
       ListHeaderComponent={
-        <Filter filterBy={filterBy} setFilterBy={setFilterBy} />
+        <View>
+          <SearchBar
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
+          <Filter filterBy={filterBy} setFilterBy={setFilterBy} />
+        </View>
       }
       ListHeaderComponentStyle={{
         marginBlock: 10,
@@ -91,9 +109,14 @@ const RepositoryList = () => {
     orderBy: 'CREATED_AT',
     orderDirection: 'DESC',
   });
+  const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
 
   const navigate = useNavigate();
-  const { repositories, loading } = useRepositories(filterBy);
+  const { repositories, loading } = useRepositories(
+    filterBy,
+    debouncedSearchQuery
+  );
 
   if (loading) {
     return (
@@ -109,6 +132,8 @@ const RepositoryList = () => {
       navigate={navigate}
       filterBy={filterBy}
       setFilterBy={setFilterBy}
+      searchQuery={searchQuery}
+      setSearchQuery={setSearchQuery}
     />
   );
 };
