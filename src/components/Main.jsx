@@ -7,6 +7,7 @@ import AppBar from './AppBar';
 import RepositoryView from './RepositoryView';
 import CreateReviewForm from './CreateReviewForm';
 import SignUpForm from './SignUpForm';
+import Reviews from './Reviews';
 
 import theme from '../theme';
 
@@ -28,6 +29,7 @@ const Main = () => {
         <Route path="/signup" element={<SignUpForm />} />
         <Route path="/login" element={<SignIn />} />
         <Route path="/addReview" element={<CreateReviewForm />} />
+        <Route path="/reviews" element={<Reviews />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </View>

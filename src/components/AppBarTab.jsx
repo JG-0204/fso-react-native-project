@@ -43,30 +43,39 @@ const AppBarTab = ({ style }) => {
         </Text>
       </Link>
 
-      {data?.me && (
-        <Link to="/addReview">
-          <Text
-            fontWeight="bold"
-            color="primary"
-            fontSize="subheading"
-            style={style}
-          >
-            Create a review
-          </Text>
-        </Link>
-      )}
-
       {data?.me ? (
-        <Pressable onPress={onSignOut}>
-          <Text
-            fontWeight="bold"
-            color="primary"
-            fontSize="subheading"
-            style={style}
-          >
-            Sign Out
-          </Text>
-        </Pressable>
+        <View style={styles.formContainer}>
+          <Link to="/addReview">
+            <Text
+              fontWeight="bold"
+              color="primary"
+              fontSize="subheading"
+              style={style}
+            >
+              Create a review
+            </Text>
+          </Link>
+          <Link to="/reviews">
+            <Text
+              fontWeight="bold"
+              color="primary"
+              fontSize="subheading"
+              style={style}
+            >
+              My reviews
+            </Text>
+          </Link>
+          <Pressable onPress={onSignOut}>
+            <Text
+              fontWeight="bold"
+              color="primary"
+              fontSize="subheading"
+              style={style}
+            >
+              Sign Out
+            </Text>
+          </Pressable>
+        </View>
       ) : (
         <View style={styles.formContainer}>
           <Link to="/login">
