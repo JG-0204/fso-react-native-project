@@ -1,28 +1,37 @@
 import { View, FlatList, StyleSheet } from 'react-native';
 import { useParams } from 'react-router-native';
-import { useQuery } from '@apollo/client';
 
 import RepositoryItem from './RepositoryItem';
 import ItemSeparator from './ItemSeparator';
 import Text from './Text';
 
-import { GET_REPOSITORY, GET_REPOSITORY_REVIEWS } from '../graphql/queries';
+import useRepository from '../hooks/useRepository';
 import theme from '../theme';
-
 import formatDate from '../utils/formatDate';
+
+const RepositoryViewContainer = ({ reviews, repository, onEndReached }) => {
+  return (
+    <FlatList
+      data={reviews}
+      renderItem={({ item }) => <ReviewItem review={item} />}
+      keyExtractor={({ id }) => id}
+      ListHeaderComponent={() => <RepositoryItem repository={repository} />}
+      ItemSeparatorComponent={ItemSeparator}
+      onEndReached={onEndReached}
+      onEndReachedThreshold={0.5}
+    />
+  );
+};
 
 const RepositoryView = () => {
   const { repositoryId } = useParams();
 
-  const repoQuery = useQuery(GET_REPOSITORY, {
-    variables: { repositoryId },
-  });
-  const repoReviewQuery = useQuery(GET_REPOSITORY_REVIEWS, {
-    variables: { repositoryId },
-    fetchPolicy: 'cache-and-network',
+  const { reviews, repository, loading, fetchMore } = useRepository({
+    repositoryId,
+    first: 8,
   });
 
-  if (repoQuery.loading || repoReviewQuery.loading) {
+  if (loading) {
     return (
       <View>
         <Text>loading...</Text>
@@ -30,19 +39,15 @@ const RepositoryView = () => {
     );
   }
 
-  const reviews = repoReviewQuery.data.repository.reviews.edges.map(
-    (edge) => edge.node
-  );
+  const onEndReached = () => {
+    fetchMore();
+  };
 
   return (
-    <FlatList
-      data={reviews}
-      renderItem={({ item }) => <ReviewItem review={item} />}
-      keyExtractor={({ id }) => id}
-      ListHeaderComponent={() => (
-        <RepositoryItem repository={repoQuery.data.repository} />
-      )}
-      ItemSeparatorComponent={ItemSeparator}
+    <RepositoryViewContainer
+      reviews={reviews}
+      repository={repository}
+      onEndReached={onEndReached}
     />
   );
 };

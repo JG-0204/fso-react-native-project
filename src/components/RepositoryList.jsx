@@ -73,6 +73,7 @@ export const RepositoryListContainer = ({
   setFilterBy,
   searchQuery,
   setSearchQuery,
+  onEndReached,
 }) => {
   return (
     <FlatList
@@ -100,6 +101,8 @@ export const RepositoryListContainer = ({
       ListHeaderComponentStyle={{
         marginBlock: 10,
       }}
+      onEndReached={onEndReached}
+      onEndReachedThreshold={0.5}
     />
   );
 };
@@ -113,9 +116,12 @@ const RepositoryList = () => {
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
 
   const navigate = useNavigate();
-  const { repositories, loading } = useRepositories(
+  const { repositories, loading, fetchMore } = useRepositories(
     filterBy,
-    debouncedSearchQuery
+    debouncedSearchQuery,
+    {
+      first: 8,
+    }
   );
 
   if (loading) {
@@ -126,6 +132,10 @@ const RepositoryList = () => {
     );
   }
 
+  const onEndReached = () => {
+    fetchMore();
+  };
+
   return (
     <RepositoryListContainer
       repositories={repositories}
@@ -134,6 +144,7 @@ const RepositoryList = () => {
       setFilterBy={setFilterBy}
       searchQuery={searchQuery}
       setSearchQuery={setSearchQuery}
+      onEndReached={onEndReached}
     />
   );
 };
